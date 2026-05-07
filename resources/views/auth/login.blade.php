@@ -159,7 +159,7 @@
 
         <div class="hint">
             <strong>📧 E-mail:</strong> usuario@esoft.com<br>
-            <strong>🔑 Senha:</strong> Abc123
+            <strong>🔑 Password:</strong> Abc123
         </div>
 
         <form action="{{ route('login.submit') }}" method="POST">
