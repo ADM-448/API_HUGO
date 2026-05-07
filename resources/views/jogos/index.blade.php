@@ -109,15 +109,256 @@
 
 {{-- PAINEL DOS ENDPOINTS DA API --}}
 <div class="api-section">
-    <h2>🔌 Endpoints da API (testáveis em <code style="color:var(--accent2)">localhost:8000/api</code>)</h2>
-    <div class="endpoint-grid">
-        <div class="endpoint"><span class="method POST">POST</span> /api/login — Autenticar (usuario@esoft.com / Abc123)</div>
-        <div class="endpoint"><span class="method GET">GET</span> /api/jogos — Listar todos os jogos</div>
-        <div class="endpoint"><span class="method GET">GET</span> /api/jogos/{id} — Buscar jogo por ID</div>
-        <div class="endpoint"><span class="method POST">POST</span> /api/jogos — Cadastrar novo jogo</div>
-        <div class="endpoint"><span class="method PUT">PUT</span> /api/jogos/{id} — Atualizar jogo (todos os campos)</div>
-        <div class="endpoint"><span class="method DELETE">DELETE</span> /api/jogos/{id} — Remover jogo (204 sem corpo)</div>
+    <h2>🔌 Endpoints da API <span style="font-weight:400; font-size:.9rem;">(clique para expandir)</span></h2>
+    <p style="font-size:.82rem; color:var(--muted); margin-bottom:1.2rem;">
+        Base URL local: <code style="color:var(--accent2)">http://localhost:8000/api</code>
+        &nbsp;|&nbsp;
+        Base URL Railway: <code style="color:var(--accent2)">https://web-production-a3ec9.up.railway.app/api</code>
+    </p>
+
+    {{-- LOGIN --}}
+    <div class="api-card" onclick="toggleApi('login')">
+        <div class="api-card-header">
+            <span class="method POST">POST</span>
+            <span class="api-path">/api/login</span>
+            <span class="api-desc">Autenticar e obter token</span>
+            <span class="api-chevron" id="chev-login">▶</span>
+        </div>
+        <div class="api-card-body" id="body-login">
+            <div class="api-cols">
+                <div>
+                    <div class="api-label">📤 Request Body (JSON)</div>
+                    <pre class="api-code">{
+  "email": "usuario@esoft.com",
+  "password": "Abc123"
+}</pre>
+                </div>
+                <div>
+                    <div class="api-label">📥 Response <span class="status-ok">200 OK</span></div>
+                    <pre class="api-code">{
+  "token": "uuid-gerado-aqui"
+}</pre>
+                </div>
+            </div>
+        </div>
     </div>
+
+    {{-- GET JOGOS --}}
+    <div class="api-card" onclick="toggleApi('get-jogos')">
+        <div class="api-card-header">
+            <span class="method GET">GET</span>
+            <span class="api-path">/api/jogos</span>
+            <span class="api-desc">Listar todos os jogos</span>
+            <span class="api-chevron" id="chev-get-jogos">▶</span>
+        </div>
+        <div class="api-card-body" id="body-get-jogos">
+            <div class="api-cols">
+                <div>
+                    <div class="api-label">📤 Request</div>
+                    <pre class="api-code">Sem body — acesso direto</pre>
+                </div>
+                <div>
+                    <div class="api-label">📥 Response <span class="status-ok">200 OK</span></div>
+                    <pre class="api-code">[
+  {
+    "id": 1,
+    "nome": "The Legend of Zelda",
+    "tipo": "Aventura",
+    "nota": 10,
+    "review": "Um clássico absoluto."
+  },
+  {
+    "id": 2,
+    "nome": "FIFA 23",
+    "tipo": "Esporte",
+    "nota": 7,
+    "review": "Bom para jogar com amigos."
+  }
+]</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- GET JOGOS/{ID} --}}
+    <div class="api-card" onclick="toggleApi('get-jogo-id')">
+        <div class="api-card-header">
+            <span class="method GET">GET</span>
+            <span class="api-path">/api/jogos/{id}</span>
+            <span class="api-desc">Buscar jogo por ID</span>
+            <span class="api-chevron" id="chev-get-jogo-id">▶</span>
+        </div>
+        <div class="api-card-body" id="body-get-jogo-id">
+            <div class="api-cols">
+                <div>
+                    <div class="api-label">📤 Request</div>
+                    <pre class="api-code">GET /api/jogos/1
+Sem body</pre>
+                </div>
+                <div>
+                    <div class="api-label">📥 Response <span class="status-ok">200 OK</span> / <span class="status-err">404</span></div>
+                    <pre class="api-code">{
+  "id": 1,
+  "nome": "The Legend of Zelda",
+  "tipo": "Aventura",
+  "nota": 10,
+  "review": "Um clássico absoluto."
+}
+
+// 404:
+{ "message": "Jogo não encontrado." }</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- POST JOGOS --}}
+    <div class="api-card" onclick="toggleApi('post-jogos')">
+        <div class="api-card-header">
+            <span class="method POST">POST</span>
+            <span class="api-path">/api/jogos</span>
+            <span class="api-desc">Cadastrar novo jogo</span>
+            <span class="api-chevron" id="chev-post-jogos">▶</span>
+        </div>
+        <div class="api-card-body" id="body-post-jogos">
+            <div class="api-cols">
+                <div>
+                    <div class="api-label">📤 Request Body (JSON)</div>
+                    <pre class="api-code">{
+  "nome": "God of War",
+  "tipo": "Ação",
+  "nota": 10,
+  "review": "Épico do início ao fim."
+}</pre>
+                    <div class="api-label" style="margin-top:.8rem">⚠️ Campos obrigatórios</div>
+                    <pre class="api-code">nome (string), tipo (string),
+nota (int 0-10), review (string)</pre>
+                </div>
+                <div>
+                    <div class="api-label">📥 Response <span class="status-ok">201 Created</span> / <span class="status-err">422</span></div>
+                    <pre class="api-code">{
+  "id": 3,
+  "nome": "God of War",
+  "tipo": "Ação",
+  "nota": 10,
+  "review": "Épico do início ao fim."
+}
+
+// 422:
+{
+  "message": "Dados inválidos.",
+  "errors": { "nome": ["required"] }
+}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- PUT JOGOS/{ID} --}}
+    <div class="api-card" onclick="toggleApi('put-jogos')">
+        <div class="api-card-header">
+            <span class="method PUT">PUT</span>
+            <span class="api-path">/api/jogos/{id}</span>
+            <span class="api-desc">Atualizar todos os dados do jogo</span>
+            <span class="api-chevron" id="chev-put-jogos">▶</span>
+        </div>
+        <div class="api-card-body" id="body-put-jogos">
+            <div class="api-cols">
+                <div>
+                    <div class="api-label">📤 Request Body (JSON)</div>
+                    <pre class="api-code">{
+  "nome": "Zelda: Tears of Kingdom",
+  "tipo": "Aventura",
+  "nota": 10,
+  "review": "Melhor jogo da geração."
+}</pre>
+                </div>
+                <div>
+                    <div class="api-label">📥 Response <span class="status-ok">200 OK</span> / <span class="status-err">404</span></div>
+                    <pre class="api-code">{
+  "id": 1,
+  "nome": "Zelda: Tears of Kingdom",
+  "tipo": "Aventura",
+  "nota": 10,
+  "review": "Melhor jogo da geração."
+}
+
+// 404:
+{ "message": "Jogo não encontrado." }</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- DELETE JOGOS/{ID} --}}
+    <div class="api-card" onclick="toggleApi('del-jogos')">
+        <div class="api-card-header">
+            <span class="method DELETE">DELETE</span>
+            <span class="api-path">/api/jogos/{id}</span>
+            <span class="api-desc">Remover um jogo</span>
+            <span class="api-chevron" id="chev-del-jogos">▶</span>
+        </div>
+        <div class="api-card-body" id="body-del-jogos">
+            <div class="api-cols">
+                <div>
+                    <div class="api-label">📤 Request</div>
+                    <pre class="api-code">DELETE /api/jogos/1
+Sem body</pre>
+                </div>
+                <div>
+                    <div class="api-label">📥 Response <span class="status-ok">204 No Content</span> / <span class="status-err">404</span></div>
+                    <pre class="api-code">// 204: sem corpo na resposta
+
+// 404:
+{ "message": "Jogo não encontrado." }</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+<style>
+.api-section h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: .4rem; color: var(--text); }
+.api-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; margin-bottom: .6rem; cursor: pointer;
+    transition: border-color .2s;
+}
+.api-card:hover { border-color: rgba(124,92,252,.4); }
+.api-card-header {
+    display: flex; align-items: center; gap: 1rem;
+    padding: .8rem 1.2rem; font-family: 'Courier New', monospace; font-size: .85rem;
+}
+.api-path { color: var(--text); font-weight: 600; }
+.api-desc { color: var(--muted); font-size: .82rem; font-family: 'Inter', sans-serif; flex: 1; }
+.api-chevron { color: var(--muted); font-size: .75rem; transition: transform .2s; }
+.api-chevron.open { transform: rotate(90deg); color: var(--accent); }
+.api-card-body {
+    display: none; padding: 1.2rem 1.4rem;
+    border-top: 1px solid var(--border);
+}
+.api-card-body.open { display: block; }
+.api-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.api-label { font-size: .75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing:.05em; margin-bottom: .5rem; }
+.api-code {
+    background: #0a0c15; border: 1px solid var(--border);
+    border-radius: 8px; padding: .9rem 1rem;
+    font-family: 'Courier New', monospace; font-size: .8rem;
+    color: var(--accent2); line-height: 1.6; white-space: pre-wrap;
+}
+.status-ok  { color: #22c55e; font-weight: 700; }
+.status-err { color: #f43f5e; font-weight: 700; }
+@media(max-width:640px) { .api-cols { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+function toggleApi(id) {
+    const body = document.getElementById('body-' + id);
+    const chev = document.getElementById('chev-' + id);
+    body.classList.toggle('open');
+    chev.classList.toggle('open');
+}
+</script>
 
 @endsection
