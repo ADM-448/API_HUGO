@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Middleware\HandleCors;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,6 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Registra HandleCors globalmente (antes de tudo)
+        $middleware->prepend(HandleCors::class);
+
         $middleware->alias([
             'auth.token'   => \App\Http\Middleware\VerificarToken::class,
             'auth.sessao'  => \App\Http\Middleware\VerificarSessao::class,
