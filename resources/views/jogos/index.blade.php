@@ -111,8 +111,7 @@
 <div class="api-section">
     <h2>🔌 Endpoints da API <span style="font-weight:400; font-size:.9rem;">(clique para expandir)</span></h2>
     <p style="font-size:.82rem; color:var(--muted); margin-bottom:1.2rem;">
-        Base URL local: <code style="color:var(--accent2)">http://localhost:8000/api</code>
-        &nbsp;|&nbsp;
+      
         Base URL Railway: <code style="color:var(--accent2)">https://web-production-a3ec9.up.railway.app/api</code>
     </p>
 
